@@ -34,11 +34,23 @@ class Dishdetail extends Component{
             <div key={comment.id}>
                 
                     <li>
-                        {comment.comment}
+                        
+                            {comment.comment}
+                            
                     </li>
                     <br/>
                     <li>
-                        -- {comment.author}  {monthNames[d.getMonth()]} {("0" + d.getDate()).slice(-2)},{d.getFullYear()}
+                            {/*   {monthNames[d.getMonth()]} {("0" + d.getDate()).slice(-2)},{d.getFullYear()} */}
+                            
+                             -- {comment.author}
+                                {" "}
+                                {new Intl.DateTimeFormat("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "2-digit",
+                                }).format(new Date(Date.parse(comment.date)))}
+                            
+                            
                     </li>
                     <br/>
             </div>
@@ -55,6 +67,28 @@ class Dishdetail extends Component{
             </div>
         );
     }
+
+//     renderComments(comments) {
+//     if (comments != null) {
+//       return comments.map((comment) => {
+//         return (
+//           <li>
+//             <span>
+//               <p>{comment.comment}</p>
+//               <p>
+//                 -- {comment.author},{" "}
+//                 {new Intl.DateTimeFormat("en-US", {
+//                   year: "numeric",
+//                   month: "short",
+//                   day: "2-digit",
+//                 }).format(new Date(Date.parse(comment.date)))}
+//               </p>
+//             </span>
+//           </li>
+//         );
+//       });
+//     } else return <div></div>;
+//   }
 
     render(){
         return(
