@@ -1,11 +1,7 @@
 import React,{Component} from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
-import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class Dishdetail extends Component{
-    constructor(props){
-        super(props);
-    }
 
     renderDish(){
         return(
@@ -22,14 +18,7 @@ class Dishdetail extends Component{
 
 
     renderComments(){
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        ];
-        
-        
         const commentList = this.props.dish.comments.map((comment) => {   
-        var d=new Date(comment.date);
-        
         return (
             <div key={comment.id}>
                 
@@ -40,17 +29,15 @@ class Dishdetail extends Component{
                     </li>
                     <br/>
                     <li>
-                            {/*   {monthNames[d.getMonth()]} {("0" + d.getDate()).slice(-2)},{d.getFullYear()} */}
                             
-                             -- {comment.author}
+                            -- {comment.author}
                                 {" "}
                                 {new Intl.DateTimeFormat("en-US", {
                                     year: "numeric",
                                     month: "short",
                                     day: "2-digit",
                                 }).format(new Date(Date.parse(comment.date)))}
-                            
-                            
+
                     </li>
                     <br/>
             </div>
@@ -68,30 +55,9 @@ class Dishdetail extends Component{
         );
     }
 
-//     renderComments(comments) {
-//     if (comments != null) {
-//       return comments.map((comment) => {
-//         return (
-//           <li>
-//             <span>
-//               <p>{comment.comment}</p>
-//               <p>
-//                 -- {comment.author},{" "}
-//                 {new Intl.DateTimeFormat("en-US", {
-//                   year: "numeric",
-//                   month: "short",
-//                   day: "2-digit",
-//                 }).format(new Date(Date.parse(comment.date)))}
-//               </p>
-//             </span>
-//           </li>
-//         );
-//       });
-//     } else return <div></div>;
-//   }
-
     render(){
         return(
+            <div className="container">
             <div className="row">
                 <div  className="col-12 col-md-5 m-1">
                     {this.props.dish
@@ -111,6 +77,7 @@ class Dishdetail extends Component{
                         <div></div>
                     }
                 </div>
+            </div>
             </div>
         );
     }
