@@ -103,6 +103,7 @@ export const fetchPromos = () => (dispatch) => {
 				}
 			},
 			(error) => {
+				//donot hear anything from server
 				var errmess = new Error(error.message);
 				throw errmess;
 			}
