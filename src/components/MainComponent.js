@@ -14,6 +14,8 @@ import {
 	fetchDishes,
 	fetchComments,
 	fetchPromos,
+	fetchLeaders,
+	postFeedback,
 } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -42,6 +44,27 @@ const mapDispatchToProps = (dispatch) => {
 		fetchPromos: () => dispatch(fetchPromos()),
 		postComment: (dishId, rating, author, comment) =>
 			dispatch(postComment(dishId, rating, author, comment)),
+		fetchLeaders: () => dispatch(fetchLeaders()),
+		postFeedback: (
+			firstName,
+			lastName,
+			telnum,
+			email,
+			agree,
+			contactType,
+			message
+		) =>
+			dispatch(
+				postFeedback(
+					firstName,
+					lastName,
+					telnum,
+					email,
+					agree,
+					contactType,
+					message
+				)
+			),
 	};
 };
 
@@ -50,7 +73,7 @@ class Main extends Component {
 		this.props.fetchDishes();
 		this.props.fetchComments();
 		this.props.fetchPromos();
-		console.log(this.props);
+		this.props.fetchLeaders();
 	}
 
 	render() {
@@ -67,7 +90,11 @@ class Main extends Component {
 					}
 					promoLoading={this.props.promotions.isLoading}
 					promoErrMess={this.props.promotions.errMess}
-					leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+					leader={
+						this.props.leaders.leaders.filter((leader) => leader.featured)[0]
+					}
+					leaderLoading={this.props.leaders.isLoading}
+					leaderErrMess={this.props.leaders.errMess}
 				/>
 			);
 		};
@@ -92,6 +119,24 @@ class Main extends Component {
 			);
 		};
 
+		const AboutUs = () => {
+			return (
+				<About
+					leaders={this.props.leaders.leaders}
+					isLoading={this.props.leaders.isLoading}
+					errMsg={this.props.leaders.errMess}
+				/>
+			);
+		};
+
+		const ContactUs = () => {
+			return (
+				<Contact
+					resetFeedbackForm={this.props.resetFeedbackForm}
+					postFeedback={this.props.postFeedback}
+				/>
+			);
+		};
 		return (
 			<div>
 				<Header />
@@ -103,11 +148,7 @@ class Main extends Component {
 					>
 						<Switch location={this.props.location}>
 							<Route path='/home' component={HomePage} />
-							<Route
-								exact
-								path='/aboutus'
-								component={() => <About leaders={this.props.leaders} />}
-							/>
+							<Route exact path='/aboutus' component={AboutUs} />
 							} />
 							<Route
 								exact
@@ -115,13 +156,7 @@ class Main extends Component {
 								component={() => <Menu dishes={this.props.dishes} />}
 							/>
 							<Route path='/menu/:dishId' component={DishWithId} />
-							<Route
-								exact
-								path='/contactus'
-								component={() => (
-									<Contact resetFeedbackForm={this.props.resetFeedbackForm} />
-								)}
-							/>
+							<Route exact path='/contactus' component={ContactUs} />
 							<Redirect to='/home' />
 						</Switch>
 					</CSSTransition>

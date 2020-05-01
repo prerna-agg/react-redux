@@ -8,27 +8,36 @@ import {
 	Media,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from '../components/LoadingComponent';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
-const RenderLeader = ({ leader }) => {
-	console.log(leader);
-	return (
-		<Media tag='li'>
-			<Media left top className='mr-md-5'>
-				<Media object src={leader.image} alt={leader.name} />
+function RenderLeader({ leader, isLoading, errMess }) {
+	if (isLoading) {
+		return <Loading />;
+	} else if (errMess) {
+		return <h4>{errMess}</h4>;
+	} else {
+		return (
+			<Media tag='li'>
+				<Media left middle>
+					<Media object src={baseUrl + leader.image} alt={leader.name} />
+				</Media>
+				<Media body className='ml-5'>
+					<Media heading>{leader.name}</Media>
+					<Media title>{leader.designation}</Media>
+					<br />
+					<p>{leader.description}</p>
+				</Media>
 			</Media>
-			<Media body>
-				<Media heading>{leader.name}</Media>
-				<p>{leader.designation}</p>
-				<p>{leader.description}</p>
-			</Media>
-		</Media>
-	);
-};
-
+		);
+	}
+}
 function About(props) {
-	const leaders = props.leaders.map((leader) => {
-		return <RenderLeader leader={leader} />;
-	});
+	// console.log(props);
+	// const leaders = props.leaders.map((leader) => {
+	// 	return <RenderLeader leader={leader} />;
+	// });
 
 	return (
 		<div className='container'>
@@ -106,7 +115,22 @@ function About(props) {
 					<h2>Corporate Leadership</h2>
 				</div>
 				<div className='col-12'>
-					<Media list>{leaders}</Media>
+					<Media list>
+						<Stagger in>
+							{props.leaders.map((leader) => {
+								return (
+									<Fade in>
+										<RenderLeader
+											key={leader.id}
+											leader={leader}
+											isLoading={props.leadersLoading}
+											errMess={props.leadersErrMess}
+										/>
+									</Fade>
+								);
+							})}
+						</Stagger>
+					</Media>
 				</div>
 			</div>
 		</div>
